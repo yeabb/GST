@@ -1,10 +1,12 @@
 package com.example.gst
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,6 +22,13 @@ class Gas : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+
+    private lateinit var adapter: GasStationAdapter
+    private lateinit var gasRecyclerView: RecyclerView
+    private lateinit var gasArrayList: ArrayList<GasStationData>
+    lateinit var imageId : Array<Int>
+    lateinit var gasStationDetails : Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,4 +65,53 @@ class Gas : Fragment() {
                 }
             }
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        dataInitialize()
+        val layoutManager = LinearLayoutManager(context)
+        gasRecyclerView = view.findViewById(R.id.rvGas)
+        gasRecyclerView.layoutManager = layoutManager
+        gasRecyclerView.setHasFixedSize(true)
+        adapter = GasStationAdapter(gasArrayList)
+        gasRecyclerView.adapter = adapter
+
+
+    }
+
+
+
+    private fun dataInitialize(){
+
+        gasArrayList = arrayListOf<GasStationData>()
+
+        imageId = arrayOf(
+            R.drawable.ic_gas,
+            R.drawable.ic_gas,
+            R.drawable.ic_gas,
+            R.drawable.ic_gas,
+            R.drawable.ic_gas,
+            R.drawable.ic_gas,
+            R.drawable.ic_gas,
+        )
+
+        gasStationDetails = arrayOf(
+            "Total Kazanchis Akababi Branch",
+            "Total Bole Akababi Branch",
+            "Shell Yerer Akababi Branch",
+            "Total Gerji Akababi Branch",
+            "Shell Jackrose Akababi Branch",
+            "Oil libya 4 kilo Akababi Branch",
+            "Total 6 kilo Akababi Branch",
+
+            )
+
+        for (i in imageId.indices){
+            val gasStations = GasStationData(imageId[i], gasStationDetails[i])
+            gasArrayList.add(gasStations)
+        }
+
+    }
+
 }
