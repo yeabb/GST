@@ -11,9 +11,10 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         android:src="@drawable/ic_gas"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tvAboutGasStation"
+        app:layout_constraintEnd_toStartOf="@+id/tvGasStationDetails"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,6 +26,7 @@
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/siGasStationImage"
         app:layout_constraintTop_toTopOf="parent" />
 
 

@@ -94,6 +94,9 @@ class Gas : Fragment() {
             R.drawable.ic_gas,
             R.drawable.ic_gas,
             R.drawable.ic_gas,
+            R.drawable.ic_gas,
+            R.drawable.ic_gas,
+            R.drawable.ic_gas,
         )
 
         gasStationDetails = arrayOf(
@@ -102,8 +105,11 @@ class Gas : Fragment() {
             "Shell Yerer Akababi Branch",
             "Total Gerji Akababi Branch",
             "Shell Jackrose Akababi Branch",
-            "Oil libya 4 kilo Akababi Branch",
+            "Oil Libya 4 kilo Akababi Branch",
             "Total 6 kilo Akababi Branch",
+            "Shell 5 kilo Akababi Branch",
+            "Oil Libya Mexico Akababi Branch",
+            "Total Merkato Akababi Branch",
 
             )
 
