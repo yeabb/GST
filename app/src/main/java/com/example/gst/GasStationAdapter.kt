@@ -10,9 +10,19 @@ import com.google.android.material.imageview.ShapeableImageView
 
 class GasStationAdapter(private var gasStationsArr: ArrayList<GasStationData>) : RecyclerView.Adapter<GasStationAdapter.GasStationViewHolder>() {
 
-    class GasStationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var onItemClickListener: ((GasStationData) -> Unit)? = null
+    inner class GasStationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val siGasStationImage: ShapeableImageView = itemView.findViewById(R.id.siGasStationImage)
         val tvGasStationDetails: TextView = itemView.findViewById(R.id.tvGasStationDetails)
+
+        fun bind (gasStation: GasStationData) {
+            siGasStationImage.setImageResource(gasStation.gasStationImage)
+            tvGasStationDetails.text = gasStation.gasStationDetails
+
+            itemView.setOnClickListener {
+                onItemClickListener?.invoke(gasStation)
+            }
+        }
 
     }
 
@@ -29,6 +39,7 @@ class GasStationAdapter(private var gasStationsArr: ArrayList<GasStationData>) :
         val currentItem = gasStationsArr[position]
         holder.siGasStationImage.setImageResource(currentItem.gasStationImage)
         holder.tvGasStationDetails.text = currentItem.gasStationDetails
+        holder.bind(currentItem)
     }
 
 }

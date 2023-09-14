@@ -1,5 +1,6 @@
 package com.example.gst
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -76,6 +77,12 @@ class Gas : Fragment() {
         gasRecyclerView.setHasFixedSize(true)
         adapter = GasStationAdapter(gasArrayList)
         gasRecyclerView.adapter = adapter
+
+        adapter.onItemClickListener = { gasStation ->
+            val intent = Intent(requireContext(), GasStationDetailsExpand::class.java)
+//            intent.putExtra("gasStation", gasStation)
+            startActivity(intent)
+        }
 
 
     }
