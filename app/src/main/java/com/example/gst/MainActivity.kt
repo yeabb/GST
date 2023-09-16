@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.miHome -> replaceFragment(Home())
                 R.id.miGas -> replaceFragment(Gas())
                 R.id.miPay -> replaceFragment(Pay())
+                R.id.miMap -> replaceFragment(Map())
+
             }
             true
         }

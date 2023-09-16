@@ -7,6 +7,11 @@
         android:icon="@drawable/ic_home" />
 
     <item
+        android:id="@+id/miRefer"
+        android:title="NO!"
+        android:icon="@drawable/ic_no" />
+
+    <item
         android:id="@+id/miGas"
         android:title="Find Gas"
         android:icon="@drawable/ic_gas" />
@@ -15,5 +20,12 @@
         android:id="@+id/miPay"
         android:title="Pay"
         android:icon="@drawable/ic_pay" />
+
+    <item
+        android:id="@+id/miMap"
+        android:title="Map"
+        android:icon="@drawable/ic_map" />
+
+
 
 </menu>
