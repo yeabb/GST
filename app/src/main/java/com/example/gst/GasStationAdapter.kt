@@ -16,8 +16,8 @@ class GasStationAdapter(private var gasStationsArr: ArrayList<GasStationData>) :
         val tvGasStationDetails: TextView = itemView.findViewById(R.id.tvGasStationDetails)
 
         fun bind (gasStation: GasStationData) {
-            siGasStationImage.setImageResource(gasStation.gasStationImage)
-            tvGasStationDetails.text = gasStation.gasStationDetails
+            siGasStationImage.setImageResource(R.drawable.ic_gas)
+            tvGasStationDetails.text = gasStation.gasStationName
 
             itemView.setOnClickListener {
                 onItemClickListener?.invoke(gasStation)
@@ -37,8 +37,8 @@ class GasStationAdapter(private var gasStationsArr: ArrayList<GasStationData>) :
 
     override fun onBindViewHolder(holder: GasStationViewHolder, position: Int) {
         val currentItem = gasStationsArr[position]
-        holder.siGasStationImage.setImageResource(currentItem.gasStationImage)
-        holder.tvGasStationDetails.text = currentItem.gasStationDetails
+        holder.siGasStationImage.setImageResource(R.drawable.ic_gas)
+        holder.tvGasStationDetails.text = currentItem.gasStationName
         holder.bind(currentItem)
     }
 

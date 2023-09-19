@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.miHome -> replaceFragment(Home())
+                R.id.miRefer -> replaceFragment(Refer())
                 R.id.miGas -> replaceFragment(Gas())
                 R.id.miPay -> replaceFragment(Pay())
                 R.id.miMap -> replaceFragment(Map())
