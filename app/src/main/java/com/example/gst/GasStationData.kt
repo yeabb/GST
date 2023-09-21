@@ -1,10 +1,11 @@
 package com.example.gst
 
+import com.google.firebase.firestore.GeoPoint
+
 data class GasStationData(
     var gasStationName: String = "",
     var gasStationAddress: String = "",
     var gasStationPhone: String = "",
-    var gasStationLatitude: Double = 0.0,
-    var gasStationLongitude: Double = 0.0,
+    var location : GeoPoint? = null,
     var gasStationQueueLength: Int = 0
 )

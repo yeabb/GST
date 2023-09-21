@@ -22,7 +22,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAfH4nGnJFT-kbajwUVenRAwZCKRu6dHoc"/>
+            android:value="AIzaSyB4yFUlD1UiB9_wzpjOEsEr96mkF9mEQXQ"/>
         <activity
             android:name=".GasStationDetailsExpand"
             android:exported="false" />

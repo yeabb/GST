@@ -19,12 +19,13 @@
 
     <TextView
         android:id="@+id/tvStationAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="129dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="70dp"
         android:layout_marginTop="88dp"
+        android:layout_marginEnd="50dp"
         android:text="This is the adress"
         android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btToGoogleMap"
         app:layout_constraintHorizontal_bias="0.292"
         app:layout_constraintStart_toStartOf="parent"

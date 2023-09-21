@@ -11,10 +11,12 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
-
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -34,7 +36,34 @@ class Map : Fragment(), OnMapReadyCallback {
 
     private lateinit var mapView: MapView
     private var googleMap: GoogleMap? = null
+    private val db = FirebaseFirestore.getInstance()
 
+    //Set up a custom map style so that we can remove all the markers on the map
+    private val customMapStyle = """
+        [
+          {
+            "featureType": "poi",
+            "elementType": "labels",
+            "stylers": [
+              { "visibility": "off" }
+            ]
+          },
+          {
+            "featureType": "transit",
+            "elementType": "labels.icon",
+            "stylers": [
+              { "visibility": "off" }
+            ]
+          },
+          {
+            "featureType": "road",
+            "elementType": "labels.icon",
+            "stylers": [
+              { "visibility": "off" }
+            ]
+          }
+        ]
+    """.trimIndent()
 
 
 
@@ -82,14 +111,70 @@ class Map : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
+        googleMap?.setMapStyle(MapStyleOptions(customMapStyle))
 
-        // Customize and use the googleMap object for displaying maps and markers.
-        val sydney = LatLng(-34.0, 151.0)
+        val userLocation = LatLng(9.020478527484224, 38.759949051401776)
+        val gasIcon = createGasStationIcon()
+        val userIcon = creatUserIcon()
+
+
+        // Query the Firestore collection and add markers for each gas station
+        db.collection("gas_stations")
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val gasStation = document.data
+                    val gasStationName = gasStation["gasStationName"] as String
+                    val latitude = (gasStation["location"] as com.google.firebase.firestore.GeoPoint).latitude
+                    val longitude = (gasStation["location"] as com.google.firebase.firestore.GeoPoint).longitude
+
+                    val latLng = LatLng(latitude, longitude)
+
+                    googleMap?.addMarker(
+                        MarkerOptions()
+                            .position(latLng)
+                            .title(gasStationName)
+                            .icon(gasIcon)
+                    )
+                }
+
+                // Optionally, move the camera to show all markers
+                val firstMarker = documents.firstOrNull()
+                if (firstMarker != null) {
+                    val firstLatLng = LatLng(
+                        (firstMarker["location"] as com.google.firebase.firestore.GeoPoint).latitude,
+                        (firstMarker["location"] as com.google.firebase.firestore.GeoPoint).longitude
+                    )
+
+
+
+                    googleMap?.addMarker(
+                        MarkerOptions()
+                            .position(userLocation)
+                            .title("Your Location")
+                            .icon(userIcon)
+                    )
+
+                    googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 13.0f))
+                }
+            }
+            .addOnFailureListener { exception ->
+                // Handle errors here
+            }
+    }
+
+    // Create gas station icon
+    private fun createGasStationIcon(): BitmapDescriptor {
         val bitmap = BitmapFactory.decodeResource(resources, R.drawable.gasmarker)
         val scaledBitmap = Bitmap.createScaledBitmap(bitmap, 90, 90, false)
-        val gasIcon = BitmapDescriptorFactory.fromBitmap(scaledBitmap)
-        googleMap?.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney").icon(gasIcon))
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15.0f))
+        return BitmapDescriptorFactory.fromBitmap(scaledBitmap)
+    }
+
+    //Create user pin icon
+    private fun creatUserIcon(): BitmapDescriptor {
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.user_marker)
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, 150, 150, false)
+        return BitmapDescriptorFactory.fromBitmap(scaledBitmap)
     }
 
     override fun onResume() {

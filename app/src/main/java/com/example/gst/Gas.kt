@@ -9,31 +9,22 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.GeoPoint
+import com.google.firebase.firestore.QuerySnapshot
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.sqrt
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 class Gas : Fragment() {
-
-    private var param1: String? = null
-    private var param2: String? = null
 
     private lateinit var adapter: GasStationAdapter
     private lateinit var gasRecyclerView: RecyclerView
     private lateinit var gasArrayList: ArrayList<GasStationData>
-    private lateinit var databaseReference: DatabaseReference
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var userLocation: GeoPoint // User's location as a GeoPoint
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,10 +36,13 @@ class Gas : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize Firebase Database
-        databaseReference = FirebaseDatabase.getInstance().reference.child("gas_stations")
+        // Initialize Firestore
+        firestore = FirebaseFirestore.getInstance()
 
-        dataInitialize()
+        // Initialize user's location (replace with actual coordinates)
+        userLocation = GeoPoint(9.020478527484224, 38.759949051401776)
+
+        dataInitialize(userLocation)
 
         val layoutManager = LinearLayoutManager(context)
         gasRecyclerView = view.findViewById(R.id.rvGas)
@@ -59,30 +53,60 @@ class Gas : Fragment() {
 
         adapter.onItemClickListener = { gasStation ->
             val intent = Intent(requireContext(), GasStationDetailsExpand::class.java)
-            // You can pass the selected gas station data to the details activity here
-            // intent.putExtra("gasStation", gasStation)
+
+            intent.putExtra("gasStationName", gasStation.gasStationName)
+            intent.putExtra("gasStationAddress", gasStation.gasStationAddress)
+            intent.putExtra("gasStationPhone", gasStation.gasStationPhone)
+            gasStation.location?.let { intent.putExtra("gasStationLatitude", it.latitude) }
+            gasStation.location?.let { intent.putExtra("gasStationLongitude", it.longitude) }
+            intent.putExtra("gasStationQueueLength", gasStation.gasStationQueueLength)
             startActivity(intent)
         }
     }
 
-    private fun dataInitialize() {
+    private fun dataInitialize(userLocation: GeoPoint) {
         gasArrayList = arrayListOf<GasStationData>()
 
-        // Attach a ValueEventListener to fetch data from Firebase
-        databaseReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                gasArrayList.clear() // Clear the existing list
-                for (dataSnapshot in snapshot.children) {
-                    val gasStation = dataSnapshot.getValue(GasStationData::class.java)
+        // Reference to the "gas_stations" collection in Firestore
+        val collectionReference = firestore.collection("gas_stations")
+
+        // Fetch data from Firestore without sorting
+        collectionReference
+            .get()
+            .addOnSuccessListener { querySnapshot: QuerySnapshot? ->
+                querySnapshot?.documents?.forEach { documentSnapshot ->
+                    val gasStation = documentSnapshot.toObject(GasStationData::class.java)
                     gasStation?.let { gasArrayList.add(it) }
                 }
+
+                // Sort the gasArrayList by distance
+                gasArrayList.sortBy { it.location?.let { it1 -> calculateHaversineDistance(it1, userLocation) } }
                 adapter.notifyDataSetChanged() // Notify the adapter that data has changed
             }
-
-            override fun onCancelled(error: DatabaseError) {
+            .addOnFailureListener { exception ->
                 // Handle any errors here
-                Log.e("Firebase", "Error fetching data: ${error.message}")
+                Log.e("Firestore", "Error fetching data: ${exception.message}")
             }
-        })
+    }
+
+    //Using haversine formula to calculate the distance between user's location and gas station location
+    private fun calculateHaversineDistance(
+        location1: GeoPoint,
+        location2: GeoPoint
+    ): Double {
+        val radiusOfEarth = 6371.0 // Earth's radius in kilometers
+
+        // Convert latitude and longitude from degrees to radians
+        val lat1Rad = Math.toRadians(location1.latitude)
+        val lon1Rad = Math.toRadians(location1.longitude)
+        val lat2Rad = Math.toRadians(location2.latitude)
+        val lon2Rad = Math.toRadians(location2.longitude)
+
+        // Haversine formula
+        val dLat = lat2Rad - lat1Rad
+        val dLon = lon2Rad - lon1Rad
+        val a = sin(dLat / 2).pow(2) + cos(lat1Rad) * cos(lat2Rad) * sin(dLon / 2).pow(2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        return radiusOfEarth * c
     }
 }

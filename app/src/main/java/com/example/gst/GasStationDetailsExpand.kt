@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
@@ -12,17 +13,34 @@ import androidx.appcompat.app.AppCompatActivity
 class GasStationDetailsExpand : AppCompatActivity() {
 
     private lateinit var btToGoogleMap: Button
+    private lateinit var tvStationTitle: TextView
+    private lateinit var tvStationAddress: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gas_station_details_expand)
 
+
+        val gasStationName = intent.getStringExtra("gasStationName")
+        val gasStationAddress = intent.getStringExtra("gasStationAddress")
+        val gasStationPhone = intent.getStringExtra("gasStationPhone")
+        val gasStationLatitude = intent.getDoubleExtra("gasStationLatitude", 0.0)
+        val gasStationLongitude = intent.getDoubleExtra("gasStationLongitude", 0.0)
+        val gasStationQueueLength = intent.getIntExtra("gasStationQueueLength", 0)
+
+
         btToGoogleMap = findViewById(R.id.btToGoogleMap)
-        val destinationLatitude = 40.689247 // Replace with the latitude of your destination
-        val destinationLongitude = -74.044502 // Replace with the longitude of your destination
+        tvStationTitle = findViewById(R.id.tvStationTitle)
+        tvStationAddress = findViewById(R.id.tvStationAddress)
+
+
+        tvStationTitle.text = gasStationName
+        tvStationAddress.text = gasStationAddress
+
+
 
         btToGoogleMap.setOnClickListener {
             Log.d("Button Click", "Button clicked!")
-            openGoogleMapsDirections(destinationLatitude, destinationLongitude)
+            openGoogleMapsDirections(gasStationLatitude, gasStationLongitude)
         }
 
     }
