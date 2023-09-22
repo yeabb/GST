@@ -13,11 +13,11 @@ class GasStationAdapter(private var gasStationsArr: ArrayList<GasStationData>) :
     var onItemClickListener: ((GasStationData) -> Unit)? = null
     inner class GasStationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val siGasStationImage: ShapeableImageView = itemView.findViewById(R.id.siGasStationImage)
-        val tvGasStationDetails: TextView = itemView.findViewById(R.id.tvGasStationDetails)
+        val tvGasStationName: TextView = itemView.findViewById(R.id.tvGasStationName)
 
         fun bind (gasStation: GasStationData) {
             siGasStationImage.setImageResource(R.drawable.ic_gas)
-            tvGasStationDetails.text = gasStation.gasStationName
+            tvGasStationName.text = gasStation.gasStationName
 
             itemView.setOnClickListener {
                 onItemClickListener?.invoke(gasStation)
@@ -38,7 +38,7 @@ class GasStationAdapter(private var gasStationsArr: ArrayList<GasStationData>) :
     override fun onBindViewHolder(holder: GasStationViewHolder, position: Int) {
         val currentItem = gasStationsArr[position]
         holder.siGasStationImage.setImageResource(R.drawable.ic_gas)
-        holder.tvGasStationDetails.text = currentItem.gasStationName
+        holder.tvGasStationName.text = currentItem.gasStationName
         holder.bind(currentItem)
     }
 
