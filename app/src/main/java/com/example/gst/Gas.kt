@@ -51,9 +51,14 @@ class Gas : Fragment() {
         adapter = GasStationAdapter(gasArrayList)
         gasRecyclerView.adapter = adapter
 
+
         adapter.onItemClickListener = { gasStation ->
             val intent = Intent(requireContext(), GasStationDetailsExpand::class.java)
 
+            // Retrieve the document ID associated with the gas station data
+            val gasStationId = gasStationsWithIds.find { it.second == gasStation }?.first
+
+            intent.putExtra("gasStationId", gasStationId) // Pass the document ID
             intent.putExtra("gasStationName", gasStation.gasStationName)
             intent.putExtra("gasStationAddress", gasStation.gasStationAddress)
             intent.putExtra("gasStationPhone", gasStation.gasStationPhone)
@@ -63,6 +68,9 @@ class Gas : Fragment() {
             startActivity(intent)
         }
     }
+
+    // Store the gas stations with their document IDs
+    private lateinit var gasStationsWithIds: MutableList<Pair<String, GasStationData>>
 
     private fun dataInitialize(userLocation: GeoPoint) {
         gasArrayList = arrayListOf<GasStationData>()
@@ -74,9 +82,16 @@ class Gas : Fragment() {
         collectionReference
             .get()
             .addOnSuccessListener { querySnapshot: QuerySnapshot? ->
+                gasStationsWithIds = mutableListOf()
+
                 querySnapshot?.documents?.forEach { documentSnapshot ->
                     val gasStation = documentSnapshot.toObject(GasStationData::class.java)
-                    gasStation?.let { gasArrayList.add(it) }
+
+                    if (gasStation != null) {
+                        val documentId = documentSnapshot.id
+                        gasStationsWithIds.add(Pair(documentId, gasStation))
+                        gasArrayList.add(gasStation)
+                    }
                 }
 
                 // Sort the gasArrayList by distance
@@ -89,7 +104,7 @@ class Gas : Fragment() {
             }
     }
 
-    //Using haversine formula to calculate the distance between user's location and gas station location
+    // Using haversine formula to calculate the distance between user's location and gas station location
     private fun calculateHaversineDistance(
         location1: GeoPoint,
         location2: GeoPoint
