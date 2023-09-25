@@ -57,7 +57,7 @@
                     android:text="Don't have an account?" />
 
                 <TextView
-                    android:id="@+id/tvSignUp"
+                    android:id="@+id/tvLoginToSignUp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
@@ -66,7 +66,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/btLogIn"
+                android:id="@+id/btLogin"
                 android:layout_width="0dp"
                 android:layout_height="70dp"
                 android:layout_margin="16dp"

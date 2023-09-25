@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -28,6 +29,7 @@ class Signup : Fragment() {
     private lateinit var btSignup: Button
     private lateinit var etSignupEmail: EditText
     private lateinit var etSignupPassword: EditText
+    private lateinit var tvSignupToLogin : TextView
 
 
     override fun onCreateView(
@@ -41,6 +43,7 @@ class Signup : Fragment() {
         btSignup = view.findViewById(R.id.btSignup)
         etSignupEmail = view.findViewById(R.id.etSignupEmail)
         etSignupPassword = view.findViewById(R.id.etSignupPassword)
+        tvSignupToLogin = view.findViewById(R.id.tvSignupToLogin)
 
         btSignup.setOnClickListener{
             val email = etSignupEmail.text.toString()
@@ -59,6 +62,10 @@ class Signup : Fragment() {
             }else {
                 Toast.makeText(requireContext(), "Email and password cannot be empty", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        tvSignupToLogin.setOnClickListener {
+            navigateToLoginFragment()
         }
 
 
