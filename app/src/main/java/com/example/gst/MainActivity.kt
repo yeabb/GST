@@ -2,6 +2,7 @@ package com.example.gst
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.gst.databinding.ActivityMainBinding
@@ -13,7 +14,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        replaceFragment(Home())
+        Log.d("MainActivity", "onCreate")
+        replaceFragment(Login())
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId){
