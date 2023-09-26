@@ -65,7 +65,7 @@ class Login : Fragment() {
 
                     }
             }else{
-                Toast.makeText(requireContext(), "Email and password cannot be empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Email and password can not be empty", Toast.LENGTH_SHORT).show()
             }
         }
 

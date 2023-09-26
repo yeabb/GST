@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         FirebaseApp.initializeApp(this)
 
         val firebaseAuth = FirebaseAuth.getInstance()
-        firebaseAuth.signOut()
+//        firebaseAuth.signOut()
         val currentUser = firebaseAuth.currentUser
         Log.d("MainActivity", "Current User: $currentUser")
 
