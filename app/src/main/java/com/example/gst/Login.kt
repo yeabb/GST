@@ -56,6 +56,7 @@ class Login : Fragment() {
                 firebaseAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener{task ->
                         if(task.isSuccessful){
+                            showToolbarAndNavigationView()
                             showBottomNavigation()
                             replaceFragment(Home())
                         }else{
@@ -76,6 +77,13 @@ class Login : Fragment() {
         return view
     }
 
+    private fun showToolbarAndNavigationView() {
+        // Assuming that MainActivity has a function to show the bottom navigation menu
+        if (activity is MainActivity) {
+            (activity as MainActivity).showToolbarAndNavigationView()
+        }
+    }
+
     private fun showBottomNavigation() {
         // Assuming that MainActivity has a function to show the bottom navigation menu
         if (activity is MainActivity) {
@@ -91,25 +99,6 @@ class Login : Fragment() {
     }
 
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Login.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Login().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 
     private fun navigateToSignupFragment() {
         // Create an instance of the login fragment

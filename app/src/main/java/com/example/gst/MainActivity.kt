@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         FirebaseApp.initializeApp(this)
 
         val firebaseAuth = FirebaseAuth.getInstance()
-//        firebaseAuth.signOut()
+        firebaseAuth.signOut()
         val currentUser = firebaseAuth.currentUser
         Log.d("MainActivity", "Current User: $currentUser")
 
@@ -49,13 +49,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
 
-
         if (currentUser == null) {
+            hideToolbarAndNavigationView()
             hideBottomNavigation()
             // User is not authenticated, redirect to the login screen (Login fragment)
             replaceFragment(Signup())
         } else {
             // User is authenticated, enable the bottom navigation menu
+            showToolbarAndNavigationView()
             showBottomNavigation()
             replaceFragment(Home())
         }
@@ -96,11 +97,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun showBottomNavigation() {
         binding.bottomNavigationView.visibility = View.VISIBLE
+
     }
 
     private fun hideBottomNavigation() {
         binding.bottomNavigationView.visibility = View.GONE
+
     }
+
+    fun showToolbarAndNavigationView() {
+        binding.toolbar.visibility = View.VISIBLE
+        binding.navigationDrawer.visibility = View.VISIBLE
+    }
+
+    fun hideToolbarAndNavigationView() {
+        binding.toolbar.visibility = View.GONE
+        binding.navigationDrawer.visibility = View.GONE
+    }
+
+
 
     fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
