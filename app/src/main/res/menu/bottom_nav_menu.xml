@@ -17,14 +17,10 @@
         android:icon="@drawable/ic_gas" />
 
     <item
-        android:id="@+id/miPay"
-        android:title="Pay"
-        android:icon="@drawable/ic_pay" />
-
-    <item
         android:id="@+id/miMap"
         android:title="Map"
         android:icon="@drawable/ic_map" />
+
 
 
 
