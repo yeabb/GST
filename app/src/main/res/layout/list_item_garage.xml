@@ -15,12 +15,12 @@
         android:padding="16dp">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/siGasStationImage"
+            android:id="@+id/siGarageImage"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_gas"
+            android:src="@drawable/ic_garage"
             app:shapeAppearance="@style/ShapeAppearance.MaterialComponents.MediumComponent"
             android:layout_gravity="center_vertical"/>
 
@@ -32,7 +32,7 @@
             android:layout_marginStart="16dp">
 
             <TextView
-                android:id="@+id/tvGasStationName"
+                android:id="@+id/tvGarageName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/total_string"
@@ -40,18 +40,6 @@
                 android:textColor="#000000"
                 android:fontFamily="sans-serif-medium"/>
 
-            <TextView
-                android:id="@+id/tvGasStationQueueLength"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:text="5"
-                android:textSize="18sp"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:background="@drawable/circular_background"
-                android:layout_gravity="end|bottom"/>
 
         </LinearLayout>
 

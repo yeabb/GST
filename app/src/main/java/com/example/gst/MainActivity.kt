@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         FirebaseApp.initializeApp(this)
 
         val firebaseAuth = FirebaseAuth.getInstance()
-        firebaseAuth.signOut()
+//        firebaseAuth.signOut()
         val currentUser = firebaseAuth.currentUser
         Log.d("MainActivity", "Current User: $currentUser")
 
@@ -64,8 +64,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.miHome -> replaceFragment(Home())
-                R.id.miRefer -> replaceFragment(Refer())
                 R.id.miGas -> replaceFragment(Gas())
+                R.id.miGarage -> replaceFragment(Garage())
                 R.id.miMap -> replaceFragment(Map())
             }
             true

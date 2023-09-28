@@ -18,7 +18,7 @@ class GasStationAdapter(private var gasStationsArr: ArrayList<GasStationData>) :
         val tvGasStationQueueLength: TextView = itemView.findViewById(R.id.tvGasStationQueueLength)
 
         fun bind(gasStation: GasStationData) {
-            siGasStationImage.setImageResource(R.drawable.ic_gas)
+            siGasStationImage.setImageResource(R.drawable.ic_gas2)
             tvGasStationName.text = gasStation.gasStationName
 
             // Set the queue status text based on the data
@@ -44,7 +44,7 @@ class GasStationAdapter(private var gasStationsArr: ArrayList<GasStationData>) :
 
     override fun onBindViewHolder(holder: GasStationViewHolder, position: Int) {
         val currentItem = gasStationsArr[position]
-        holder.siGasStationImage.setImageResource(R.drawable.ic_gas)
+        holder.siGasStationImage.setImageResource(R.drawable.ic_gas2)
         holder.tvGasStationName.text = currentItem.gasStationName
 
         // Set the queue status text based on the data

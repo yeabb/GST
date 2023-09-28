@@ -6,15 +6,16 @@
         android:title="Home"
         android:icon="@drawable/ic_home" />
 
-    <item
-        android:id="@+id/miRefer"
-        android:title="NO!"
-        android:icon="@drawable/ic_no" />
 
     <item
         android:id="@+id/miGas"
         android:title="Find Gas"
         android:icon="@drawable/ic_gas" />
+
+    <item
+        android:id="@+id/miGarage"
+        android:title="Find Garage"
+        android:icon="@drawable/ic_garage" />
 
     <item
         android:id="@+id/miMap"

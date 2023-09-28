@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_theme"
+    android:background="@color/lavender"
     tools:context=".GasStationDetailsExpand">
 
     <LinearLayout
@@ -21,7 +21,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:contentDescription="Gas Station Icon"
-            android:src="@drawable/ic_gas" />
+            android:src="@drawable/ic_gas2" />
 
         <!-- Gas Station Name TextView -->
         <TextView
