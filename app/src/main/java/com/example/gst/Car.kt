@@ -11,17 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.QuerySnapshot
-import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.pow
-import kotlin.math.sin
-import kotlin.math.sqrt
 
-class Garage : Fragment() {
 
-    private lateinit var adapter: GarageAdapter
-    private lateinit var garageRecyclerView: RecyclerView
-    private lateinit var garageArrayList: ArrayList<GarageData>
+
+class Car : Fragment() {
+    private lateinit var adapter: CarAdapter
+    private lateinit var carRecyclerView: RecyclerView
+    private lateinit var carArrayList: ArrayList<CarsSellData>
     private lateinit var firestore: FirebaseFirestore
     private lateinit var userLocation: GeoPoint
 
@@ -30,7 +26,7 @@ class Garage : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_garage, container, false)
+        return inflater.inflate(R.layout.fragment_car, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,16 +36,15 @@ class Garage : Fragment() {
         firestore = FirebaseFirestore.getInstance()
 
         // Initialize user's location (replace with actual coordinates)
-        userLocation = GeoPoint(9.020478527484224, 38.759949051401776)
 
-        dataInitialize(userLocation)
+        dataInitialize()
 
         val layoutManager = LinearLayoutManager(context)
-        garageRecyclerView = view.findViewById(R.id.rvGarage)
-        garageRecyclerView.layoutManager = layoutManager
-        garageRecyclerView.setHasFixedSize(true)
-        adapter = GarageAdapter(garageArrayList)
-        garageRecyclerView.adapter = adapter
+        carRecyclerView = view.findViewById(R.id.rvCar)
+        carRecyclerView.layoutManager = layoutManager
+        carRecyclerView.setHasFixedSize(true)
+        adapter = CarAdapter(carArrayList)
+        carRecyclerView.adapter = adapter
 
 
 //        adapter.onItemClickListener = { gasStation ->
@@ -70,32 +65,29 @@ class Garage : Fragment() {
     }
 
     // Store the gas stations with their document IDs
-    private lateinit var garagesWithIds: MutableList<Pair<String, GarageData>>
+    private lateinit var carsWithIds: MutableList<Pair<String, CarsSellData>>
 
-    private fun dataInitialize(userLocation: GeoPoint) {
-        garageArrayList = arrayListOf<GarageData>()
+    private fun dataInitialize() {
+        carArrayList = arrayListOf<CarsSellData>()
 
         // Reference to the "gas_stations" collection in Firestore
-        val collectionReference = firestore.collection("garages")
+        val collectionReference = firestore.collection("cars")
 
         // Fetch data from Firestore without sorting
         collectionReference
             .get()
             .addOnSuccessListener { querySnapshot: QuerySnapshot? ->
-                garagesWithIds = mutableListOf()
+                carsWithIds = mutableListOf()
 
                 querySnapshot?.documents?.forEach { documentSnapshot ->
-                    val garage = documentSnapshot.toObject(GarageData::class.java)
+                    val car = documentSnapshot.toObject(CarsSellData::class.java)
 
-                    if (garage != null) {
+                    if (car != null) {
                         val documentId = documentSnapshot.id
-                        garagesWithIds.add(Pair(documentId, garage))
-                        garageArrayList.add(garage)
+                        carsWithIds.add(Pair(documentId, car))
+                        carArrayList.add(car)
                     }
                 }
-
-                // Sort the gasArrayList by distance
-                garageArrayList.sortBy { it.location?.let { it1 -> calculateHaversineDistance(it1, userLocation) } }
                 adapter.notifyDataSetChanged() // Notify the adapter that data has changed
             }
             .addOnFailureListener { exception ->
@@ -104,24 +96,5 @@ class Garage : Fragment() {
             }
     }
 
-    // Using haversine formula to calculate the distance between user's location and gas station location
-    private fun calculateHaversineDistance(
-        location1: GeoPoint,
-        location2: GeoPoint
-    ): Double {
-        val radiusOfEarth = 6371.0 // Earth's radius in kilometers
 
-        // Convert latitude and longitude from degrees to radians
-        val lat1Rad = Math.toRadians(location1.latitude)
-        val lon1Rad = Math.toRadians(location1.longitude)
-        val lat2Rad = Math.toRadians(location2.latitude)
-        val lon2Rad = Math.toRadians(location2.longitude)
-
-        // Haversine formula
-        val dLat = lat2Rad - lat1Rad
-        val dLon = lon2Rad - lon1Rad
-        val a = sin(dLat / 2).pow(2) + cos(lat1Rad) * cos(lat2Rad) * sin(dLon / 2).pow(2)
-        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-        return radiusOfEarth * c
-    }
 }

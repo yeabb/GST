@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Initialize Firebase (Add this line)
         FirebaseApp.initializeApp(this)
 
-        val firebaseAuth = FirebaseAuth.getInstance()
+        firebaseAuth = FirebaseAuth.getInstance()
 //        firebaseAuth.signOut()
         val currentUser = firebaseAuth.currentUser
         Log.d("MainActivity", "Current User: $currentUser")
@@ -58,12 +59,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             // User is authenticated, enable the bottom navigation menu
             showToolbarAndNavigationView()
             showBottomNavigation()
-            replaceFragment(Home())
+            replaceFragment(Car())
         }
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.miHome -> replaceFragment(Home())
+                R.id.miCar -> replaceFragment(Car())
                 R.id.miGas -> replaceFragment(Gas())
                 R.id.miGarage -> replaceFragment(Garage())
                 R.id.miMap -> replaceFragment(Map())
@@ -78,7 +79,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.miAbout -> replaceFragment(AboutUs())
             R.id.miHelp -> replaceFragment(Help())
             R.id.miShare -> replaceFragment(Settings())
-            R.id.miLogout -> replaceFragment(Settings())
+            R.id.miLogout -> {
+
+                firebaseAuth.signOut()
+                replaceFragment(Login())
+            }
         }
 
         binding.drawerLayout.closeDrawer(GravityCompat.START)
