@@ -20,11 +20,10 @@ class CarAdapter(private var carsArr: ArrayList<CarsSellData>):
         val tvCarStatus: TextView = itemView.findViewById(R.id.tvCarStatus)
 
         fun bind(car: CarsSellData) {
-            sicarImageLeftWing.setImageResource(R.drawable.ic_cars)
+            sicarImageLeftWing.setImageResource(R.drawable.ic_car2)
             tvCarMake.text = car.carMake
-
-            // Set the car status text based on the data
-            tvCarStatus.text = car.carStatus.toString()
+            tvCarModelYear.text = car.carModelYear
+            tvCarStatus.text = car.carStatus
 
             itemView.setOnClickListener {
                 onItemClickListener?.invoke(car)
@@ -45,7 +44,7 @@ class CarAdapter(private var carsArr: ArrayList<CarsSellData>):
 
     override fun onBindViewHolder(holder: CarViewHolder, position: Int) {
         val currentItem = carsArr[position]
-        holder.sicarImageLeftWing.setImageResource(R.drawable.ic_cars)
+        holder.sicarImageLeftWing.setImageResource(R.drawable.ic_car2)
         holder.tvCarModelName.text = currentItem.carModelName
 
         // Set the queue status text based on the data

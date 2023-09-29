@@ -7,7 +7,7 @@ cred = credentials.Certificate("credentials.json")
 firebase_admin.initialize_app(cred)
 
 # Load the Excel file
-excel_file = openpyxl.load_workbook('cars.xlsx')
+excel_file = openpyxl.load_workbook('carsRent.xlsx')
 sheet = excel_file.active
 
 # Get a reference to the Firestore database
@@ -30,14 +30,14 @@ for row in sheet.iter_rows(min_row=2, values_only=True):  # Assuming headers are
         "carPlateNumber": str(carPlateNumber),
         "carMake": str(carMake),
         "carModelName": str(carModelName),
-        "carModelYear": str(carModelYear),
+        "carModelYear": str(int(carModelYear)),
         "carStatus": str(carStatus)
 
     }
 
     # Add the data to Firestore
     try:
-        doc_ref, doc_id = db.collection('cars').add(car)  # Access the document ID from the tuple
+        doc_ref, doc_id = db.collection('carsRent').add(car)  # Access the document ID from the tuple
         print(f"Successfully added data for {carPlateNumber} with document ID: {doc_id}")
     except Exception as e:
         print(f"Failed to add data for {carPlateNumber}: {str(e)}")

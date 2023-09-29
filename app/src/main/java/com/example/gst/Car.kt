@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Switch
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,14 +13,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.QuerySnapshot
 
-
-
 class Car : Fragment() {
     private lateinit var adapter: CarAdapter
     private lateinit var carRecyclerView: RecyclerView
     private lateinit var carArrayList: ArrayList<CarsSellData>
     private lateinit var firestore: FirebaseFirestore
     private lateinit var userLocation: GeoPoint
+    private lateinit var toggleButton: Switch
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,41 +37,43 @@ class Car : Fragment() {
 
         // Initialize user's location (replace with actual coordinates)
 
-        dataInitialize()
+        // Initialize the toggle button
+        toggleButton = view.findViewById(R.id.toggleButton)
+        toggleButton.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                // Display the list of "Cars for Rent"
+                dataInitialize(true)
+            } else {
+                // Display the list of "Cars for Sale"
+                dataInitialize(false)
+            }
+        }
 
         val layoutManager = LinearLayoutManager(context)
         carRecyclerView = view.findViewById(R.id.rvCar)
         carRecyclerView.layoutManager = layoutManager
         carRecyclerView.setHasFixedSize(true)
+        carArrayList = ArrayList()
         adapter = CarAdapter(carArrayList)
         carRecyclerView.adapter = adapter
 
-
-//        adapter.onItemClickListener = { gasStation ->
-//            val intent = Intent(requireContext(), GasStationDetailsExpand::class.java)
-//
-//            // Retrieve the document ID associated with the gas station data
-//            val gasStationId = gasStationsWithIds.find { it.second == gasStation }?.first
-//
-//            intent.putExtra("gasStationId", gasStationId) // Pass the document ID
-//            intent.putExtra("gasStationName", gasStation.gasStationName)
-//            intent.putExtra("gasStationAddress", gasStation.gasStationAddress)
-//            intent.putExtra("gasStationPhone", gasStation.gasStationPhone)
-//            gasStation.location?.let { intent.putExtra("gasStationLatitude", it.latitude) }
-//            gasStation.location?.let { intent.putExtra("gasStationLongitude", it.longitude) }
-//            intent.putExtra("gasStationQueueLength", gasStation.gasStationQueueLength)
-//            startActivity(intent)
-//        }
+        // Initially, display the list of "Cars for Sale"
+        dataInitialize(false)
     }
 
-    // Store the gas stations with their document IDs
+    // Store the cars with their document IDs
     private lateinit var carsWithIds: MutableList<Pair<String, CarsSellData>>
 
-    private fun dataInitialize() {
-        carArrayList = arrayListOf<CarsSellData>()
+    private fun dataInitialize(isForRent: Boolean) {
+        // Clear the existing list
+        carArrayList.clear()
 
-        // Reference to the "gas_stations" collection in Firestore
-        val collectionReference = firestore.collection("cars")
+        // Reference to the appropriate collection in Firestore
+        val collectionReference = if (isForRent) {
+            firestore.collection("carsSell")
+        } else {
+            firestore.collection("carsRent")
+        }
 
         // Fetch data from Firestore without sorting
         collectionReference
@@ -95,6 +97,4 @@ class Car : Fragment() {
                 Log.e("Firestore", "Error fetching data: ${exception.message}")
             }
     }
-
-
 }
