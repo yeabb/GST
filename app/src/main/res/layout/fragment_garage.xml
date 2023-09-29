@@ -7,13 +7,36 @@
     android:layout_marginTop="5dp"
     tools:context=".Garage">
 
+
+    <Switch
+        android:id="@+id/toggleButtonGarage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Garages/Spare Parts"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp" />
+
+    <TextView
+        android:id="@+id/tvFragmentDescriptionGarage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toggleButtonGarage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Garages around you"
+        android:textSize="25sp"
+        android:layout_marginTop="16dp"/>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvGarage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/tvFragmentDescriptionGarage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
