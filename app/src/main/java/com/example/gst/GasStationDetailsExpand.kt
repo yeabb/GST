@@ -19,6 +19,7 @@ class GasStationDetailsExpand : AppCompatActivity() {
     private lateinit var btReport: Button
     private lateinit var etNumberOfCars: EditText
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var tvGasStationQueueLengthInExpanded : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,7 @@ class GasStationDetailsExpand : AppCompatActivity() {
         tvStationTitle = findViewById(R.id.tvStationTitle)
         btReport = findViewById(R.id.btReport)
         etNumberOfCars = findViewById(R.id.etNumberOfCars)
+        tvGasStationQueueLengthInExpanded = findViewById(R.id.tvGasStationQueueLengthInExpanded)
 
         val gasStationId = intent.getStringExtra("gasStationId").toString()
         val gasStationName = intent.getStringExtra("gasStationName")
@@ -37,6 +39,11 @@ class GasStationDetailsExpand : AppCompatActivity() {
         val gasStationLatitude = intent.getDoubleExtra("gasStationLatitude", 0.0)
         val gasStationLongitude = intent.getDoubleExtra("gasStationLongitude", 0.0)
         val gasStationQueueLength = intent.getIntExtra("gasStationQueueLength", 0)
+
+
+        tvGasStationQueueLengthInExpanded.text = gasStationQueueLength.toString()
+
+
 
         btToGoogleMap.setOnClickListener {
             Log.d("GooglenMap Button Click", "Google map Button clicked!")
@@ -51,6 +58,8 @@ class GasStationDetailsExpand : AppCompatActivity() {
             if (newQueueValString.isNotEmpty()) {
                 val newQueueVal = newQueueValString.toInt()
                 updateGasStationQueueLength(gasStationId, newQueueVal)
+                tvGasStationQueueLengthInExpanded.text = newQueueVal.toString()
+
             } else {
                 // Handle the case where the input is empty
                 Toast.makeText(this, "Please enter a valid number of cars.", Toast.LENGTH_SHORT).show()
