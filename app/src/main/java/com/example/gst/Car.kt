@@ -21,7 +21,7 @@ class Car : Fragment() {
     private lateinit var firestore: FirebaseFirestore
     private lateinit var userLocation: GeoPoint
     private lateinit var toggleButton: Switch
-    private lateinit var tvFragmentDescription : TextView
+    private lateinit var tvFragmentDescriptionCar : TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,18 +37,18 @@ class Car : Fragment() {
         // Initialize Firestore
         firestore = FirebaseFirestore.getInstance()
 
-        tvFragmentDescription=view.findViewById<TextView>(R.id.tvFragmentDescription)
+        tvFragmentDescriptionCar=view.findViewById<TextView>(R.id.tvFragmentDescriptionCar)
 
         // Initialize the toggle button
         toggleButton = view.findViewById(R.id.toggleButton)
         toggleButton.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 // Display the list of "Cars for Rent"
-                tvFragmentDescription.text = "Cars available for Rent"
+                tvFragmentDescriptionCar.text = "Cars available for Rent"
                 dataInitialize(true)
             } else {
                 // Display the list of "Cars for Sale"
-                tvFragmentDescription.text = "Cars available for Sell"
+                tvFragmentDescriptionCar.text = "Cars available for Sell"
                 dataInitialize(false)
             }
         }

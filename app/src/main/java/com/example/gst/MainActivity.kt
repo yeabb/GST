@@ -1,5 +1,6 @@
 package com.example.gst
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -12,6 +13,7 @@ import com.example.gst.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
@@ -78,7 +80,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.miSettings -> replaceFragment(Settings())
             R.id.miAbout -> replaceFragment(AboutUs())
             R.id.miHelp -> replaceFragment(Help())
-            R.id.miShare -> replaceFragment(Settings())
+            R.id.miShare -> {
+                val appLink = "https://play.google.com/store/apps/details?id=com.example.yourapp"
+
+                // Create an intent to share your app's link
+                val shareIntent = Intent(Intent.ACTION_SEND)
+                shareIntent.type = "text/plain"
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this cool app: $appLink")
+
+                // Start the share activity
+                startActivity(Intent.createChooser(shareIntent, "Share via"))
+            }
+
             R.id.miLogout -> {
 
                 firebaseAuth.signOut()
