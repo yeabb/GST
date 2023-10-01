@@ -6,10 +6,11 @@
 <!--        android:title="Home"-->
 <!--        android:icon="@drawable/ic_home" />-->
 
+
     <item
-        android:id="@+id/miCar"
-        android:title="Car market"
-        android:icon="@drawable/ic_car"/>
+        android:id="@+id/miMap"
+        android:title="Map"
+        android:icon="@drawable/ic_map" />
 
     <item
         android:id="@+id/miGas"
@@ -22,9 +23,13 @@
         android:icon="@drawable/ic_garage" />
 
     <item
-        android:id="@+id/miMap"
-        android:title="Map"
-        android:icon="@drawable/ic_map" />
+        android:id="@+id/miCar"
+        android:title="Car market"
+        android:icon="@drawable/ic_car"/>
+
+
+
+
 
 
 

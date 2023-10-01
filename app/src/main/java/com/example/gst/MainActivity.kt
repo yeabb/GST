@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             // User is authenticated, enable the bottom navigation menu
             showToolbarAndNavigationView()
             showBottomNavigation()
-            replaceFragment(Car())
+            replaceFragment(Map())
         }
 
         binding.bottomNavigationView.setOnItemSelectedListener {
