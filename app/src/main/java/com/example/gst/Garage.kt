@@ -1,5 +1,6 @@
 package com.example.gst
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -52,21 +53,21 @@ class Garage : Fragment() {
         garageRecyclerView.adapter = adapter
 
 
-//        adapter.onItemClickListener = { gasStation ->
-//            val intent = Intent(requireContext(), GasStationDetailsExpand::class.java)
-//
-//            // Retrieve the document ID associated with the gas station data
-//            val gasStationId = gasStationsWithIds.find { it.second == gasStation }?.first
-//
-//            intent.putExtra("gasStationId", gasStationId) // Pass the document ID
-//            intent.putExtra("gasStationName", gasStation.gasStationName)
-//            intent.putExtra("gasStationAddress", gasStation.gasStationAddress)
-//            intent.putExtra("gasStationPhone", gasStation.gasStationPhone)
-//            gasStation.location?.let { intent.putExtra("gasStationLatitude", it.latitude) }
-//            gasStation.location?.let { intent.putExtra("gasStationLongitude", it.longitude) }
-//            intent.putExtra("gasStationQueueLength", gasStation.gasStationQueueLength)
-//            startActivity(intent)
-//        }
+        adapter.onItemClickListener = { garage ->
+            val intent = Intent(requireContext(), GarageDetailsExpand::class.java)
+
+            // Retrieve the document ID associated with the gas station data
+            val garageId = garagesWithIds.find { it.second == garage }?.first
+
+            intent.putExtra("garageId", garageId) // Pass the document ID
+            intent.putExtra("garageName", garage.garageName)
+            intent.putExtra("garageAddress", garage.garageAddress)
+            intent.putExtra("garagePhone", garage.garagePhone)
+            garage.location?.let { intent.putExtra("garageLatitude", it.latitude) }
+            garage.location?.let { intent.putExtra("garageLongitude", it.longitude) }
+//            intent.putExtra("gasStationQueueLength", garage.gasStationQueueLength)
+            startActivity(intent)
+        }
     }
 
     // Store the gas stations with their document IDs

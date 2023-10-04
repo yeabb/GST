@@ -58,7 +58,7 @@ class Login : Fragment() {
                         if(task.isSuccessful){
                             showToolbarAndNavigationView()
                             showBottomNavigation()
-                            replaceFragment(Home())
+                            replaceFragment(Map())
                         }else{
                             val errorMessage = task.exception?.message
                             Toast.makeText(requireContext(), "Wrong email or password, please try again", Toast.LENGTH_SHORT).show()

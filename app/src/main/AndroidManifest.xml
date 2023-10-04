@@ -7,8 +7,11 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.SEND" />
 
+    <queries>
 
-
+        <!-- Specify the Google Maps package name -->
+        <package android:name="com.google.android.apps.maps" />
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -20,10 +23,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GST"
         tools:targetApi="31">
+        <activity
+            android:name=".GarageDetailsExpand"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB4yFUlD1UiB9_wzpjOEsEr96mkF9mEQXQ"/>
+            android:value="AIzaSyB4yFUlD1UiB9_wzpjOEsEr96mkF9mEQXQ" />
+
         <activity
             android:name=".GasStationDetailsExpand"
             android:exported="false" />
@@ -37,11 +44,5 @@
             </intent-filter>
         </activity>
     </application>
-
-
-    <queries>
-        <!-- Specify the Google Maps package name -->
-        <package android:name="com.google.android.apps.maps" />
-    </queries>
 
 </manifest>
