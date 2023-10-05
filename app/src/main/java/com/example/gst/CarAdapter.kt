@@ -7,10 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 
-class CarAdapter(private var carsArr: ArrayList<CarsSellData>):
+class CarAdapter(private var carsArr: ArrayList<CarData>):
     RecyclerView.Adapter<CarAdapter.CarViewHolder>() {
 
-    var onItemClickListener: ((CarsSellData) -> Unit)? = null
+    var onItemClickListener: ((CarData) -> Unit)? = null
 
     inner class CarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val sicarImageLeftWing: ShapeableImageView = itemView.findViewById(R.id.sicarImageLeftWing)
@@ -19,7 +19,7 @@ class CarAdapter(private var carsArr: ArrayList<CarsSellData>):
         val tvCarModelYear: TextView = itemView.findViewById(R.id.tvCarModelYear)
         val tvCarStatus: TextView = itemView.findViewById(R.id.tvCarStatus)
 
-        fun bind(car: CarsSellData) {
+        fun bind(car: CarData) {
             sicarImageLeftWing.setImageResource(R.drawable.ic_car2)
             tvCarMake.text = car.carMake
             tvCarModelYear.text = car.carModelYear

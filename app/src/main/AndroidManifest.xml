@@ -24,6 +24,12 @@
         android:theme="@style/Theme.GST"
         tools:targetApi="31">
         <activity
+            android:name=".CarRentDetailsExpand"
+            android:exported="false" />
+        <activity
+            android:name=".CarBuyDetailsExpand"
+            android:exported="false" />
+        <activity
             android:name=".GarageDetailsExpand"
             android:exported="false" />
 

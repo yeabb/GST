@@ -1,9 +1,9 @@
 package com.example.gst
 
-data class CarsSellData(
-    var carSellerFirstName: String = "",
-    var carSellerLastName: String = "",
-    var carSellerPhone: String = "",
+data class CarData(
+    var carOwnerFirstName: String = "",
+    var carOwnerLastName: String = "",
+    var carOwnerPhone: String = "",
 //    var carImageFront: Bitmap? = null,
 //    var carImageRightWing: Bitmap? = null,
 //    var carImageLeftWing: Bitmap? = null,
@@ -15,4 +15,4 @@ data class CarsSellData(
     var carModelYear: String = "",
     var carStatus : String = "",
 
-)
+    )

@@ -18,15 +18,15 @@ unique_geopoints = set()
 
 # Iterate through the rows of the sheet
 for row in sheet.iter_rows(min_row=2, values_only=True):  # Assuming headers are in the first row
-    carSellerFirstName, carSellerLastName, carSellerPhone, carPlateNumber, carMake, carModelName, carModelYear, carStatus= row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7]
+    carOwnerFirstName, carOwnerLastName, carOwnerPhone, carPlateNumber, carMake, carModelName, carModelYear, carStatus= row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7]
 
     
 
     # Create a dictionary to represent the car object
     car = {
-        "carSellerFirstName": str(carSellerFirstName),
-        "carSellerLastName": str(carSellerLastName),
-        "carSellerPhone": str(carSellerPhone),
+        "carOwnerFirstName": str(carOwnerFirstName),
+        "carOwnerLastName": str(carOwnerLastName),
+        "carOwnerPhone": str(carOwnerPhone),
         "carPlateNumber": str(carPlateNumber),
         "carMake": str(carMake),
         "carModelName": str(carModelName),

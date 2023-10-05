@@ -1,5 +1,6 @@
 package com.example.gst
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,11 +18,12 @@ import com.google.firebase.firestore.QuerySnapshot
 class Car : Fragment() {
     private lateinit var adapter: CarAdapter
     private lateinit var carRecyclerView: RecyclerView
-    private lateinit var carArrayList: ArrayList<CarsSellData>
+    private lateinit var carArrayList: ArrayList<CarData>
     private lateinit var firestore: FirebaseFirestore
     private lateinit var userLocation: GeoPoint
     private lateinit var toggleButton: Switch
     private lateinit var tvFragmentDescriptionCar : TextView
+    private var toggleStatus: Boolean? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +39,7 @@ class Car : Fragment() {
         // Initialize Firestore
         firestore = FirebaseFirestore.getInstance()
 
+
         tvFragmentDescriptionCar=view.findViewById<TextView>(R.id.tvFragmentDescriptionCar)
 
         // Initialize the toggle button
@@ -46,10 +49,12 @@ class Car : Fragment() {
                 // Display the list of "Cars for Rent"
                 tvFragmentDescriptionCar.text = "Cars available for Rent"
                 dataInitialize(true)
+                toggleStatus = true
             } else {
                 // Display the list of "Cars for Sale"
                 tvFragmentDescriptionCar.text = "Cars available for Sell"
                 dataInitialize(false)
+                toggleStatus = false
             }
         }
 
@@ -63,10 +68,28 @@ class Car : Fragment() {
 
         // Initially, display the list of "Cars for Sale"
         dataInitialize(false)
+
+
+        adapter.onItemClickListener = { car ->
+            val intent = Intent(requireContext(), CarBuyDetailsExpand::class.java)
+
+            // Retrieve the document ID associated with the gas station data
+            val carId = carsWithIds.find { it.second == car }?.first
+
+            intent.putExtra("carId", carId) // Pass the document ID
+            intent.putExtra("carSellerFirstName", car.carOwnerFirstName)
+            intent.putExtra("carMake", car.carMake)
+            intent.putExtra("carSellerLastName", car.carOwnerLastName)
+            intent.putExtra("carSellerPhone", car.carOwnerPhone)
+
+            startActivity(intent)
+        }
+
+
     }
 
     // Store the cars with their document IDs
-    private lateinit var carsWithIds: MutableList<Pair<String, CarsSellData>>
+    private lateinit var carsWithIds: MutableList<Pair<String, CarData>>
 
     private fun dataInitialize(isForRent: Boolean) {
         // Clear the existing list
@@ -74,7 +97,7 @@ class Car : Fragment() {
 
         // Reference to the appropriate collection in Firestore
         val collectionReference = if (isForRent) {
-            firestore.collection("carsSell")
+            firestore.collection("carsBuy")
         } else {
             firestore.collection("carsRent")
         }
@@ -86,7 +109,7 @@ class Car : Fragment() {
                 carsWithIds = mutableListOf()
 
                 querySnapshot?.documents?.forEach { documentSnapshot ->
-                    val car = documentSnapshot.toObject(CarsSellData::class.java)
+                    val car = documentSnapshot.toObject(CarData::class.java)
 
                     if (car != null) {
                         val documentId = documentSnapshot.id

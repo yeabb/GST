@@ -8,50 +8,13 @@
     tools:context=".Garage">
 
 
-    <LinearLayout
-        android:id="@+id/linearLayoutGarageFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:gravity="center"
-        android:layout_margin="16dp">
-
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Garages around you"
-            android:textStyle="bold"/>
-
-
-        <Switch
-            android:id="@+id/toggleButtonGarage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Buy spare parts"
-            android:textStyle="bold"/>
-
-
-
-    </LinearLayout>
-
-
 
 
     <TextView
         android:id="@+id/tvFragmentDescriptionGarage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/linearLayoutGarageFragment"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:text="Garages around you"
