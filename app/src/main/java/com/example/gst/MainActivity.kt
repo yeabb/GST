@@ -94,6 +94,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             R.id.miLogout -> {
 
+                hideToolbarAndNavigationView()
+                hideBottomNavigation()
                 firebaseAuth.signOut()
                 replaceFragment(Login())
             }

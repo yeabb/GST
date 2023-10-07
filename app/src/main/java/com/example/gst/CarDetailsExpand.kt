@@ -3,6 +3,7 @@ package com.example.gst
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -14,58 +15,76 @@ import java.lang.Math.abs
 class CarDetailsExpand : AppCompatActivity() {
 
     private lateinit var tvCarMake: TextView
-    private lateinit var  viewPager2: ViewPager2
-    private lateinit var handler : Handler
-    private lateinit var carImageUrls:ArrayList<Int>
+    private lateinit var viewPager2: ViewPager2
+    private lateinit var handler: Handler
     private lateinit var adapter: ImageAdapter
+    private lateinit var carImageUrls: ArrayList<String> // To store the image URLs
+    private lateinit var nextButton: Button
+    private lateinit var prevButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_car_details_expand)
 
         tvCarMake = findViewById(R.id.tvCarMake)
+        nextButton = findViewById(R.id.btnNext)
+        prevButton = findViewById(R.id.btnPrevious)
 
         val carId = intent.getStringExtra("carId").toString()
         val carOwnerFirstName = intent.getStringExtra("carOwnerFirstName")
         val carMake = intent.getStringExtra("carMake")
         val carOwnerLastName = intent.getStringExtra("carOwnerLastName")
         val carOwnerPhone = intent.getStringExtra("carOwnerPhone")
-//        val carImageUrls = intent.getStringArrayListExtra("carImageUrls")
 
+        // Retrieve the carImageUrls ArrayList from the Intent
+        carImageUrls = intent.getStringArrayListExtra("carImageUrls") ?: ArrayList()
 
         init()
         setUpTransformer()
 
-        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                handler.removeCallbacks(runnable)
-                handler.postDelayed(runnable , 2000)
+                // Do not start the auto-scroll runnable here
             }
         })
 
-
         tvCarMake.text = carMake
 
+        nextButton.setOnClickListener {
+            val currentItem = viewPager2.currentItem
+            if (currentItem < adapter.itemCount - 1) {
+                viewPager2.setCurrentItem(currentItem + 1, true)
+            }
+        }
+
+        prevButton.setOnClickListener {
+            val currentItem = viewPager2.currentItem
+            if (currentItem > 0) {
+                viewPager2.setCurrentItem(currentItem - 1, true)
+            }
+        }
     }
 
     override fun onPause() {
         super.onPause()
-
-        handler.removeCallbacks(runnable)
+//        handler.removeCallbacks(runnable)
     }
 
     override fun onResume() {
         super.onResume()
-
-        handler.postDelayed(runnable , 2000)
     }
 
-    private val runnable = Runnable {
-        viewPager2.currentItem = viewPager2.currentItem + 1
-    }
 
-    private fun setUpTransformer(){
+
+//    private val runnable = Runnable {
+//        // This part of the code is removed to prevent auto-scrolling
+//    }
+
+
+
+
+    private fun setUpTransformer() {
         val transformer = CompositePageTransformer()
         transformer.addTransformer(MarginPageTransformer(40))
         transformer.addTransformer { page, position ->
@@ -76,16 +95,11 @@ class CarDetailsExpand : AppCompatActivity() {
         viewPager2.setPageTransformer(transformer)
     }
 
-    private fun init(){
+    private fun init() {
         viewPager2 = findViewById(R.id.viewPager2)
         handler = Handler(Looper.myLooper()!!)
-        carImageUrls = ArrayList()
 
-        carImageUrls.add(R.drawable.ic_car2)
-        carImageUrls.add(R.drawable.ic_garage)
-        carImageUrls.add(R.drawable.ic_gas)
-
-
+        // Create the adapter with the retrieved carImageUrls
         adapter = ImageAdapter(carImageUrls, viewPager2)
 
         viewPager2.adapter = adapter
@@ -93,6 +107,5 @@ class CarDetailsExpand : AppCompatActivity() {
         viewPager2.clipToPadding = false
         viewPager2.clipChildren = false
         viewPager2.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-
     }
 }
