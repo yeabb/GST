@@ -27,7 +27,7 @@
             android:name=".CarRentDetailsExpand"
             android:exported="false" />
         <activity
-            android:name=".CarBuyDetailsExpand"
+            android:name=".CarDetailsExpand"
             android:exported="false" />
         <activity
             android:name=".GarageDetailsExpand"

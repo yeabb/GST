@@ -43,7 +43,7 @@ for row in sheet.iter_rows(min_row=2, values_only=True):  # Assuming headers are
 
     # Add the data to Firestore
     try:
-        doc_ref, doc_id = db.collection('garages').add(garage)  # Access the document ID from the tuple
+        doc_ref, doc_id = db.collection('garagesss').add(garage)  # Access the document ID from the tuple
         print(f"Successfully added data for {garageName} with document ID: {doc_id}")
     except Exception as e:
         print(f"Failed to add data for {garageName}: {str(e)}")

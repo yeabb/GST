@@ -71,16 +71,17 @@ class Car : Fragment() {
 
 
         adapter.onItemClickListener = { car ->
-            val intent = Intent(requireContext(), CarBuyDetailsExpand::class.java)
+            val intent = Intent(requireContext(), CarDetailsExpand::class.java)
 
             // Retrieve the document ID associated with the gas station data
             val carId = carsWithIds.find { it.second == car }?.first
 
             intent.putExtra("carId", carId) // Pass the document ID
-            intent.putExtra("carSellerFirstName", car.carOwnerFirstName)
+            intent.putExtra("carOwnerFirstName", car.carOwnerFirstName)
             intent.putExtra("carMake", car.carMake)
-            intent.putExtra("carSellerLastName", car.carOwnerLastName)
-            intent.putExtra("carSellerPhone", car.carOwnerPhone)
+            intent.putExtra("carOwnerLastName", car.carOwnerLastName)
+            intent.putExtra("carOwnerPhone", car.carOwnerPhone)
+            intent.putExtra("carImageUrls", car.carImageUrls)
 
             startActivity(intent)
         }
@@ -97,9 +98,9 @@ class Car : Fragment() {
 
         // Reference to the appropriate collection in Firestore
         val collectionReference = if (isForRent) {
-            firestore.collection("carsBuy")
+            firestore.collection("carsForSell")
         } else {
-            firestore.collection("carsRent")
+            firestore.collection("carsForRent")
         }
 
         // Fetch data from Firestore without sorting
