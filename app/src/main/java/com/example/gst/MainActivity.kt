@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -13,14 +15,15 @@ import com.example.gst.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAuth: FirebaseAuth
-//    private lateinit var firestore: FirebaseFirestore
-//    private lateinit var tvNavUserName: TextView
-//    private lateinit var tvNavEmail : TextView
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var tvNavUserName: TextView
+    private lateinit var tvNavEmail : TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,20 +37,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val toggle = ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.open_nav, R.string.close_nav )
 
-
-//        tvNavUserName = findViewById(R.id.tvNavUserName)
-//        tvNavEmail = findViewById(R.id.tvNavEmail)
+        val navigationView = findViewById<NavigationView>(R.id.navigationDrawer)
+        val headerView = navigationView.getHeaderView(0)
+        tvNavUserName = headerView.findViewById<TextView>(R.id.tvNavUserName)
+        tvNavEmail = headerView.findViewById<TextView>(R.id.tvNavEmail)
 
         // Initialize Firebase (Add this line)
         FirebaseApp.initializeApp(this)
 
 
         firebaseAuth = FirebaseAuth.getInstance()
-//        firestore = FirebaseFirestore.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
 //        firebaseAuth.signOut()
         val currentUser = firebaseAuth.currentUser
         val userId = currentUser?.uid
+        val email = currentUser?.email.toString()
 
         Log.d("MainActivity", "Current User: $currentUser")
 
@@ -70,33 +75,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             // User is authenticated, enable the bottom navigation menu
 
-//            val userDocRef = userId?.let { firestore.collection("users").document(it) }
-//
-//            // ...
-//
-//            userDocRef?.get()
-//                ?.addOnSuccessListener { documentSnapshot ->
-//                    if (documentSnapshot.exists()) {
-//                        // Data exists for the specified user
-//                        val firstName = documentSnapshot.getString("firstName")
-//                        val lastName = documentSnapshot.getString("lastName")
-//                        val fullName = "$firstName $lastName"
-//                        tvNavUserName.text = fullName
-//
-//
-//                    } else {
-//                        // No data found for the specified user
-//                        // Handle this case accordingly
-//                    }
-//                }
-//                ?.addOnFailureListener { e ->
-//                    // Handle any errors that occurred during the fetch
-//                    Toast.makeText(
-//                        this, // Use 'this' or 'applicationContext' here
-//                        "Error fetching user data: ${e.message}",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
+            val userDocRef = userId?.let { firestore.collection("users").document(it) }
+
+            // ...
+
+            userDocRef?.get()
+                ?.addOnSuccessListener { documentSnapshot ->
+                    if (documentSnapshot.exists()) {
+                        // Data exists for the specified user
+                        val firstName = documentSnapshot.getString("firstName")
+                        val lastName = documentSnapshot.getString("lastName")
+                        val fullName = "$firstName $lastName"
+                        tvNavUserName.text = fullName
+                        tvNavEmail.text = email
+
+
+                    } else {
+                        // No data found for the specified user
+                        // Handle this case accordingly
+                    }
+                }
+                ?.addOnFailureListener { e ->
+                    // Handle any errors that occurred during the fetch
+                    Toast.makeText(
+                        this, // Use 'this' or 'applicationContext' here
+                        "Error fetching user data: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
 
             showToolbarAndNavigationView()
 
@@ -153,6 +159,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             super.getOnBackPressedDispatcher().onBackPressed()
         }
     }
+
 
 
     fun showBottomNavigation() {

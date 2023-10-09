@@ -1,5 +1,6 @@
 package com.example.gst
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +13,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,12 +30,16 @@ private const val ARG_PARAM2 = "param2"
 class Login : Fragment() {
     // TODO: Rename and change types of parameters
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
     private lateinit var btLogin: Button
     private lateinit var etLoginEmail: EditText
     private lateinit var etLoginPassword: EditText
     private lateinit var tvLoginToSignUp: TextView
+    private lateinit var tvNavUserName: TextView
+    private lateinit var tvNavEmail : TextView
 
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,10 +49,23 @@ class Login : Fragment() {
         val view = inflater.inflate(R.layout.fragment_login, container, false)
 
         firebaseAuth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
+
+
         btLogin = view.findViewById(R.id.btLogin)
         etLoginEmail = view.findViewById(R.id.etLoginEmail)
         etLoginPassword = view.findViewById(R.id.etLoginPassword)
         tvLoginToSignUp = view.findViewById(R.id.tvLoginToSignUp)
+
+
+
+        val navigationView = requireActivity().findViewById<NavigationView>(R.id.navigationDrawer)
+        val headerView = navigationView.getHeaderView(0)
+        tvNavUserName = headerView.findViewById<TextView>(R.id.tvNavUserName)
+        tvNavEmail = headerView.findViewById<TextView>(R.id.tvNavEmail)
+
+
+
 
 
         btLogin.setOnClickListener{
@@ -56,9 +76,40 @@ class Login : Fragment() {
                 firebaseAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener{task ->
                         if(task.isSuccessful){
+
+                            val currentUser = firebaseAuth.currentUser
+                            val userId = currentUser?.uid
+
+                            val userDocRef = userId?.let { firestore.collection("users").document(it) }
+
+                            // ...
+
+                            userDocRef?.get()
+                                ?.addOnSuccessListener { documentSnapshot ->
+                                    if (documentSnapshot.exists()) {
+                                        // Data exists for the specified user
+                                        val firstName = documentSnapshot.getString("firstName")
+                                        val lastName = documentSnapshot.getString("lastName")
+                                        val fullName = "$firstName $lastName"
+                                        tvNavUserName.text = fullName
+                                        tvNavEmail.text = email
+
+
+                                    } else {
+                                        // No data found for the specified user
+                                        // Handle this case accordingly
+                                    }
+                                }
+                                ?.addOnFailureListener { e ->
+                                    // Handle any errors that occurred during the fetch
+                                    Toast.makeText(requireContext(), "Error fetching user data: ${e.message}", Toast.LENGTH_SHORT).show()
+
+                                }
+
                             showToolbarAndNavigationView()
                             showBottomNavigation()
                             replaceFragment(Map())
+
                         }else{
                             val errorMessage = task.exception?.message
                             Toast.makeText(requireContext(), "Wrong email or password, please try again", Toast.LENGTH_SHORT).show()
