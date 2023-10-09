@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Car Make"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textColor="#333333"
             android:textStyle="bold"
             android:paddingEnd="4dp"/>
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Car model"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textColor="#333333"
             android:textStyle="bold"
             android:paddingEnd="4dp"/>
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Car model year"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textColor="#333333"
             android:textStyle="bold"/>
 

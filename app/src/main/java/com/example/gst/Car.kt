@@ -79,6 +79,8 @@ class Car : Fragment() {
             intent.putExtra("carId", carId) // Pass the document ID
             intent.putExtra("carOwnerFirstName", car.carOwnerFirstName)
             intent.putExtra("carMake", car.carMake)
+            intent.putExtra("carModelName", car.carModelName)
+            intent.putExtra("carModelYear", car.carModelYear)
             intent.putExtra("carOwnerLastName", car.carOwnerLastName)
             intent.putExtra("carOwnerPhone", car.carOwnerPhone)
             intent.putExtra("carImageUrls", car.carImageUrls)

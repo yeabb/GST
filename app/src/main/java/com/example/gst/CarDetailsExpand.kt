@@ -15,6 +15,8 @@ import java.lang.Math.abs
 class CarDetailsExpand : AppCompatActivity() {
 
     private lateinit var tvCarMake: TextView
+    private lateinit var tvCarModelName: TextView
+    private lateinit var tvCarModelYear: TextView
     private lateinit var viewPager2: ViewPager2
     private lateinit var handler: Handler
     private lateinit var adapter: ImageAdapter
@@ -27,17 +29,26 @@ class CarDetailsExpand : AppCompatActivity() {
         setContentView(R.layout.activity_car_details_expand)
 
         tvCarMake = findViewById(R.id.tvCarMake)
+        tvCarModelName = findViewById(R.id.tvCarModelName)
+        tvCarModelYear = findViewById(R.id.tvCarModelYear)
         nextButton = findViewById(R.id.btnNext)
         prevButton = findViewById(R.id.btnPrevious)
 
         val carId = intent.getStringExtra("carId").toString()
         val carOwnerFirstName = intent.getStringExtra("carOwnerFirstName")
         val carMake = intent.getStringExtra("carMake")
+        val carModelName = intent.getStringExtra("carModelName")
+        val carModelYear = intent.getStringExtra("carModelYear")
         val carOwnerLastName = intent.getStringExtra("carOwnerLastName")
         val carOwnerPhone = intent.getStringExtra("carOwnerPhone")
 
-        // Retrieve the carImageUrls ArrayList from the Intent
         carImageUrls = intent.getStringArrayListExtra("carImageUrls") ?: ArrayList()
+
+
+        //Update the car details in the view
+        tvCarMake.text = carMake
+        tvCarModelName.text = carModelName
+        tvCarModelYear.text = carModelYear
 
         init()
         setUpTransformer()
@@ -49,7 +60,9 @@ class CarDetailsExpand : AppCompatActivity() {
             }
         })
 
-        tvCarMake.text = carMake
+
+
+
 
         nextButton.setOnClickListener {
             val currentItem = viewPager2.currentItem

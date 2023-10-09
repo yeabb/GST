@@ -18,6 +18,10 @@ import com.google.firebase.auth.FirebaseAuth
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAuth: FirebaseAuth
+//    private lateinit var firestore: FirebaseFirestore
+//    private lateinit var tvNavUserName: TextView
+//    private lateinit var tvNavEmail : TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,14 +35,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toggle = ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.open_nav, R.string.close_nav )
 
 
-
+//        tvNavUserName = findViewById(R.id.tvNavUserName)
+//        tvNavEmail = findViewById(R.id.tvNavEmail)
 
         // Initialize Firebase (Add this line)
         FirebaseApp.initializeApp(this)
 
+
         firebaseAuth = FirebaseAuth.getInstance()
+//        firestore = FirebaseFirestore.getInstance()
+
 //        firebaseAuth.signOut()
         val currentUser = firebaseAuth.currentUser
+        val userId = currentUser?.uid
+
         Log.d("MainActivity", "Current User: $currentUser")
 
 
@@ -59,7 +69,37 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             replaceFragment(Signup())
         } else {
             // User is authenticated, enable the bottom navigation menu
+
+//            val userDocRef = userId?.let { firestore.collection("users").document(it) }
+//
+//            // ...
+//
+//            userDocRef?.get()
+//                ?.addOnSuccessListener { documentSnapshot ->
+//                    if (documentSnapshot.exists()) {
+//                        // Data exists for the specified user
+//                        val firstName = documentSnapshot.getString("firstName")
+//                        val lastName = documentSnapshot.getString("lastName")
+//                        val fullName = "$firstName $lastName"
+//                        tvNavUserName.text = fullName
+//
+//
+//                    } else {
+//                        // No data found for the specified user
+//                        // Handle this case accordingly
+//                    }
+//                }
+//                ?.addOnFailureListener { e ->
+//                    // Handle any errors that occurred during the fetch
+//                    Toast.makeText(
+//                        this, // Use 'this' or 'applicationContext' here
+//                        "Error fetching user data: ${e.message}",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
+
             showToolbarAndNavigationView()
+
             showBottomNavigation()
             replaceFragment(Map())
         }
