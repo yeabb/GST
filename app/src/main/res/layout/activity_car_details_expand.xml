@@ -85,6 +85,18 @@
     </LinearLayout>
 
 
+    <Button
+        android:id="@+id/btCallSeller"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Contact the car owner"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:elevation="4dp"
+        android:stateListAnimator="@null"
+        android:layout_marginTop="4dp" />
+
+
 
     <!-- Separator Line -->
     <View
@@ -107,7 +119,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="10dp">
 
             <!-- Number of Cars Served (Prominent) -->
             <TextView
@@ -148,13 +160,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="8dp">
 
             <!-- Image ViewPager -->
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager2"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="220dp"
                 android:layout_gravity="center" />
 
             <!-- Navigation Buttons -->
@@ -168,9 +180,8 @@
                     android:id="@+id/btnPrevious"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:alpha="0.7"
                     android:text="&lt;"
-                    android:textSize="30sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginEnd="40dp"/>
 
@@ -178,9 +189,8 @@
                     android:id="@+id/btnNext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:alpha="0.7"
                     android:text="&gt;"
-                    android:textSize="30sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"/>
 
             </LinearLayout>

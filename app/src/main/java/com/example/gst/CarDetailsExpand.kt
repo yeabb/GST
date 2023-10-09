@@ -1,10 +1,14 @@
 package com.example.gst
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -17,6 +21,7 @@ class CarDetailsExpand : AppCompatActivity() {
     private lateinit var tvCarMake: TextView
     private lateinit var tvCarModelName: TextView
     private lateinit var tvCarModelYear: TextView
+    private lateinit var btCallSeller: Button
     private lateinit var viewPager2: ViewPager2
     private lateinit var handler: Handler
     private lateinit var adapter: ImageAdapter
@@ -29,6 +34,7 @@ class CarDetailsExpand : AppCompatActivity() {
         setContentView(R.layout.activity_car_details_expand)
 
         tvCarMake = findViewById(R.id.tvCarMake)
+        btCallSeller = findViewById(R.id.btCallSeller)
         tvCarModelName = findViewById(R.id.tvCarModelName)
         tvCarModelYear = findViewById(R.id.tvCarModelYear)
         nextButton = findViewById(R.id.btnNext)
@@ -40,7 +46,7 @@ class CarDetailsExpand : AppCompatActivity() {
         val carModelName = intent.getStringExtra("carModelName")
         val carModelYear = intent.getStringExtra("carModelYear")
         val carOwnerLastName = intent.getStringExtra("carOwnerLastName")
-        val carOwnerPhone = intent.getStringExtra("carOwnerPhone")
+        val carOwnerPhone = intent.getStringExtra("carOwnerPhone").toString()
 
         carImageUrls = intent.getStringArrayListExtra("carImageUrls") ?: ArrayList()
 
@@ -61,6 +67,24 @@ class CarDetailsExpand : AppCompatActivity() {
         })
 
 
+
+        //When the user clicks on the callSeller button
+        btCallSeller.setOnClickListener {
+            val packageManager = packageManager
+            val packageName = "com.android.phone"
+            val isPhoneAppInstalled = packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES) != null
+
+            // If the phone app is not installed, show a toast message to the user
+            if (!isPhoneAppInstalled) {
+                Toast.makeText(this, "No phone app installed", Toast.LENGTH_SHORT).show()
+
+            } else {
+                // Otherwise, start the call intent
+                val callIntent = Intent(Intent.ACTION_DIAL)
+                callIntent.data = Uri.parse("tel:$carOwnerPhone")
+                startActivity(callIntent)
+            }
+        }
 
 
 
